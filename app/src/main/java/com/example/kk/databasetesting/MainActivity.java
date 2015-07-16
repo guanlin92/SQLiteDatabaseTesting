@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
 
         //dbHandler.deleteAllContentInTable();
 
-        dbHandler.isTableEmpty();
+        //dbHandler.isTableEmpty();
 
     }
 
