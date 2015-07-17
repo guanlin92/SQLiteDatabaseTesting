@@ -19,10 +19,14 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         VisitedPlace place = new VisitedPlace("Burger King", 1.1, 1.2);
+        VisitedPlace place1 = new VisitedPlace("Burger King1", 1.1, 1.2);
+        VisitedPlace place2 = new VisitedPlace("Burger King2", 1.1, 1.2);
 
         dbHandler = new DBHandler(this, null, null, 1);
 
         dbHandler.addVisitedPlace(place);
+        dbHandler.addVisitedPlace(place1);
+        dbHandler.addVisitedPlace(place2);
 
         //dbHandler.isExistInDatabase(place.get_name());
 
@@ -30,8 +34,12 @@ public class MainActivity extends ActionBarActivity {
 
         //dbHandler.deleteAllContentInTable();
 
-        //dbHandler.isTableEmpty();
+        dbHandler.isTableEmpty();
 
+        dbHandler.getNumberOfRow();
+
+        dbHandler.deleteAllContentInTable();
+
+        dbHandler.getNumberOfRow();
     }
-
 }

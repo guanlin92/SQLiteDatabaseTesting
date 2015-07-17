@@ -13,7 +13,6 @@ public class VisitedPlace {
 
     /** Constructors **/
 
-
     /**
      * Description: default constructor
      */
