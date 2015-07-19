@@ -43,5 +43,8 @@ public class MainActivity extends ActionBarActivity {
         dbHandler.isTableEmpty();
 
         dbHandler.getNumberOfRow();
+
+        dbHandler.getContentFromTable();
+
     }
 }

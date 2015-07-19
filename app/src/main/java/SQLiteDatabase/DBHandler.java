@@ -77,13 +77,11 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param place A VisitedPlace Object of new place to add to the table.
      */
     public void addVisitedPlace(VisitedPlace place) {
-
-        //String date = Calendar.getInstance().getTime().toString();
-
         ContentValues newPlace = new ContentValues();
         newPlace.put(COLUME_NAME, place.get_name());
         newPlace.put(COLUME_LATITUDE, place.get_latitude());
         newPlace.put(COLUME_LONGITUDE, place.get_longitude());
+        newPlace.put(COLUME_DATE, place.get_date());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_NAME, null, newPlace);
         db.close();
@@ -144,10 +142,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor.getCount() <= 0) {
             cursor.close();
+            db.close();
             Log.i(TAG, "'" + place + "'" + " not found in Database");
             return false;
         } else {
             cursor.close();
+            db.close();
             Log.i(TAG, "'" + place + "'" + " founded in Database");
             return true;
         }
@@ -159,6 +159,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void deleteAllContentInTable() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME, null,null);
+        db.close();
 
         Log.i(TAG, "All content has been deleted, deleteAllContentInTable()");
     }
@@ -170,39 +171,17 @@ public class DBHandler extends SQLiteOpenHelper {
     public boolean isTableEmpty() {
         if (getNumberOfRow() > 0) {
             Log.i(TAG, "Table is not empty, isTableEmpty()");
-
-
             return false;
         } else {
             Log.i(TAG, "Table is empty, isTableEmpty()");
-
-
             return true;
         }
-
-        /*
-        SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        if (cursor.getInt(0) > 0) {
-            Log.i(TAG, "Table is not empty, isTableEmpty()");
-
-            cursor.close();
-            return false;
-        } else {
-            Log.i(TAG, "Table is empty, isTableEmpty()");
-
-            cursor.close();
-            return true;
-        }
-        */
     }
 
     public int getNumberOfRow() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query,null);
+        Cursor cursor = db.rawQuery(query, null);
         int rowCount = 0;
 
         if (cursor.getCount() > 0) {
@@ -211,9 +190,46 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        db.close();
 
         Log.i(TAG, "Table has " + rowCount + " row(s)");
 
         return rowCount;
     }
+
+    /*
+    public VisitedPlace[] getContentFromTable() {
+        VisitedPlace[] restaurants = new VisitedPlace[getNumberOfRow()];
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+
+
+        for (int i = 0; i < restaurants.length; i++) {}
+
+
+        cursor.moveToFirst();
+
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            if (cursor.getString(cursor.getColumnIndex(COLUME_NAME))!= null) {
+                restaurants[i].set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
+            }
+
+            i++;
+        }
+
+
+
+        restaurants[0].set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
+
+
+        Log.i(TAG, "restaurants name is '" + restaurants[0].get_name() + "'");
+
+        return restaurants;
+    }
+    */
+
+
+    //public void displayContentInLog() {}
 }
