@@ -168,6 +168,19 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return false if table is NOT empty, true if it is.
      */
     public boolean isTableEmpty() {
+        if (getNumberOfRow() > 0) {
+            Log.i(TAG, "Table is not empty, isTableEmpty()");
+
+
+            return false;
+        } else {
+            Log.i(TAG, "Table is empty, isTableEmpty()");
+
+
+            return true;
+        }
+
+        /*
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
@@ -183,15 +196,19 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
             return true;
         }
+        */
     }
 
     public int getNumberOfRow() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query,null);
-        //cursor.moveToFirst();
+        int rowCount = 0;
 
-        int rowCount = cursor.getCount();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            rowCount = cursor.getInt(0);
+        }
 
         cursor.close();
 
