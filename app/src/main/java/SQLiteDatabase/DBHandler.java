@@ -183,6 +183,10 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Description: count the number of row in the database
+     * @return rowCount A int value of number of row present in the database
+     */
     public int getNumberOfRow() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
@@ -202,52 +206,60 @@ public class DBHandler extends SQLiteOpenHelper {
         return rowCount;
     }
 
-
+    /**
+     * Description: extract all content in the database
+     * @return List of VisitedPlace objects
+     */
     public List<VisitedPlace> getContentFromTable() {
-        //VisitedPlace[] restaurants = new VisitedPlace[getNumberOfRow()];
-        List<VisitedPlace> restaurants = new ArrayList<VisitedPlace>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
+        if (isTableEmpty()) {
+            Log.i(TAG, "Database is empty, no content to get!");
+            return null;
+        } else {
+            List<VisitedPlace> restaurants = new ArrayList<VisitedPlace>();
+            SQLiteDatabase db = getWritableDatabase();
+            String query = "SELECT * FROM " + TABLE_NAME;
+            Cursor cursor = db.rawQuery(query, null);
 
-
-        //cursor.moveToFirst();
-
-        if (cursor.moveToFirst()) {
-            do {
-                VisitedPlace place = new VisitedPlace();
-                place.set_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUME_ID))));
-                place.set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
-                place.set_latitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LATITUDE))));
-                place.set_longitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LONGITUDE))));
-                place.set_date(cursor.getString(cursor.getColumnIndex(COLUME_DATE)));
-                restaurants.add(place);
-            } while (cursor.moveToNext());
-        }
-            ;
-        /*
-        int i = 0;
-        while (!cursor.isAfterLast()) {
-            if (cursor.getString(cursor.getColumnIndex(COLUME_NAME))!= null) {
-                restaurants[i].set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
+            if (cursor.moveToFirst()) {
+                do {
+                    VisitedPlace place = new VisitedPlace();
+                    place.set_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUME_ID))));
+                    place.set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
+                    place.set_latitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LATITUDE))));
+                    place.set_longitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LONGITUDE))));
+                    place.set_date(cursor.getString(cursor.getColumnIndex(COLUME_DATE)));
+                    restaurants.add(place);
+                } while (cursor.moveToNext());
             }
 
-            i++;
+            cursor.close();
+            db.close();
+
+            Log.i(TAG, "restaurants array length: " + restaurants.size());
+
+            return restaurants;
         }
-        */
-
-        //Log.i(TAG, "restaurants array length: " + restaurants.length);
-
-
-
-
-
-        //Log.i(TAG, "restaurants name is '" + restaurants.get(0).get_name() + "'");
-
-        return restaurants;
     }
 
+    /**
+     * Description: Display all content in the database in logcat
+     */
+    public void displayContentInLog() {
+        if (isTableEmpty()) {
+            Log.i(TAG, "No Content to display");
+        } else {
+            List<VisitedPlace> restaurants = getContentFromTable();
+            Log.i(TAG, "--------------Database Content Begin--------------");
 
+            for (int i = 0; i < restaurants.size(); i++) {
+                Log.i(TAG, restaurants.get(i).get_id() + "    "
+                        + restaurants.get(i).get_name() + "    "
+                        + restaurants.get(i).get_latitude() + "    "
+                        + restaurants.get(i).get_longitude() + "    "
+                        + restaurants.get(i).get_date());
+            }
 
-    //public void displayContentInLog() {}
+            Log.i(TAG, "--------------Database Content End----------------");
+        }
+    }
 }

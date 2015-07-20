@@ -24,13 +24,15 @@ public class MainActivity extends ActionBarActivity {
 
         dbHandler = new DBHandler(this, null, null, 1);
 
+
         dbHandler.addVisitedPlace(place);
         dbHandler.addVisitedPlace(place1);
         dbHandler.addVisitedPlace(place2);
 
-        //dbHandler.isExistInDatabase(place.get_name());
 
-        //dbHandler.deleteVisitedPlace(place.get_name());
+        dbHandler.isExistInDatabase(place.get_name());
+
+        dbHandler.deleteVisitedPlace(place.get_name());
 
         //dbHandler.deleteAllContentInTable();
 
@@ -38,13 +40,13 @@ public class MainActivity extends ActionBarActivity {
 
         dbHandler.getNumberOfRow();
 
-        dbHandler.deleteAllContentInTable();
+        //dbHandler.deleteAllContentInTable();
 
         dbHandler.isTableEmpty();
 
         dbHandler.getNumberOfRow();
 
-        //dbHandler.getContentFromTable();
-
+        dbHandler.getContentFromTable();
+        dbHandler.displayContentInLog();
     }
 }
