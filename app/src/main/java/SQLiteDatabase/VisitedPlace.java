@@ -35,11 +35,7 @@ public class VisitedPlace {
      * @param _name A string value of the name of the location
      */
     public VisitedPlace(String _name) {
-        this._id = 0;
-        this._name = _name;
-        this._latitude = 0.0;
-        this._longitude = 0.0;
-        this._date = getDateFromSystem();
+        this(_name, 0.0, 0.0);
     }
 
     /**
@@ -48,11 +44,7 @@ public class VisitedPlace {
      * @param _longitude A double value of the longitude of the location
      */
     public VisitedPlace(double _latitude, double _longitude) {
-        this._id = 0;
-        this._name = null;
-        this._latitude = _latitude;
-        this._longitude = _longitude;
-        this._date = getDateFromSystem();
+        this("", _latitude, _longitude);
     }
 
     /**
