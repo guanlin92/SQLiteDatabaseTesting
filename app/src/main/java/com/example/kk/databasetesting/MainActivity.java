@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
 
         dbHandler.getNumberOfRow();
 
-        dbHandler.getContentFromTable();
+        //dbHandler.getContentFromTable();
 
     }
 }

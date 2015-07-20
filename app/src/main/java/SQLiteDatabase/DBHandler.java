@@ -11,6 +11,9 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "history.db";
@@ -97,6 +100,8 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE "
                 + COLUME_NAME + "=\"" + placeName + "\";");
+
+        db.close();
 
         Log.i(TAG, "'" + placeName + "'" + " has been deleted in the Database, deleteVisitedPlace()");
     }
@@ -197,19 +202,30 @@ public class DBHandler extends SQLiteOpenHelper {
         return rowCount;
     }
 
-    /*
-    public VisitedPlace[] getContentFromTable() {
-        VisitedPlace[] restaurants = new VisitedPlace[getNumberOfRow()];
-        SQLiteDatabase db = getReadableDatabase();
+
+    public List<VisitedPlace> getContentFromTable() {
+        //VisitedPlace[] restaurants = new VisitedPlace[getNumberOfRow()];
+        List<VisitedPlace> restaurants = new ArrayList<VisitedPlace>();
+        SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
 
 
-        for (int i = 0; i < restaurants.length; i++) {}
+        //cursor.moveToFirst();
 
-
-        cursor.moveToFirst();
-
+        if (cursor.moveToFirst()) {
+            do {
+                VisitedPlace place = new VisitedPlace();
+                place.set_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUME_ID))));
+                place.set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
+                place.set_latitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LATITUDE))));
+                place.set_longitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(COLUME_LONGITUDE))));
+                place.set_date(cursor.getString(cursor.getColumnIndex(COLUME_DATE)));
+                restaurants.add(place);
+            } while (cursor.moveToNext());
+        }
+            ;
+        /*
         int i = 0;
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex(COLUME_NAME))!= null) {
@@ -218,17 +234,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
             i++;
         }
+        */
+
+        //Log.i(TAG, "restaurants array length: " + restaurants.length);
 
 
 
-        restaurants[0].set_name(cursor.getString(cursor.getColumnIndex(COLUME_NAME)));
 
 
-        Log.i(TAG, "restaurants name is '" + restaurants[0].get_name() + "'");
+        //Log.i(TAG, "restaurants name is '" + restaurants.get(0).get_name() + "'");
 
         return restaurants;
     }
-    */
+
 
 
     //public void displayContentInLog() {}
