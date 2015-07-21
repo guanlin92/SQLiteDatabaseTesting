@@ -30,17 +30,18 @@ public class MainActivity extends ActionBarActivity {
         dbHandler.addVisitedPlace(place2);
 
 
-        dbHandler.isExistInDatabase(place.get_name());
+        dbHandler.isExistInDatabase(place.get_name(), place.get_latitude(), place.get_longitude());
+        dbHandler.isExistInDatabase(place.get_name(), 1.4, 1.5);
 
         dbHandler.deleteVisitedPlace(place.get_name());
 
-        //dbHandler.deleteAllContentInTable();
+        dbHandler.deleteAllContentInTable();
 
         dbHandler.isTableEmpty();
 
         dbHandler.getNumberOfRow();
 
-        //dbHandler.deleteAllContentInTable();
+        dbHandler.deleteAllContentInTable();
 
         dbHandler.isTableEmpty();
 
